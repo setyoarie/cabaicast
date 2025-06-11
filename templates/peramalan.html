@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>CabaiCast</title>
+    <link
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/metisMenu.min.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/dataTables/dataTables.bootstrap.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/startmin.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/font-awesome.min.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <div id="wrapper">
+      <!-- Top Navigation -->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">CabaiCast</a>
+        </div>
+        <button
+          type="button"
+          class="navbar-toggle"
+          data-toggle="collapse"
+          data-target=".navbar-collapse"
+        >
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <!-- Left Menu -->
+        <ul class="nav navbar-nav navbar-left navbar-top-links">
+          <li>
+            <a href="#"><i class="fa fa-home fa-fw"></i> Website</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Sidebar -->
+      <aside class="sidebar navbar-default" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+          <ul class="nav" id="side-menu">
+            <li>
+              <a href="{{ url_for('index') }}"><i class="fa fa-home fa-fw"></i> Dashboard</a>
+            </li>
+            <li>
+              <a href="{{ url_for('lihat_data') }}"
+                ><i class="fa fa-database fa-fw"></i> Management Data</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('train_model') }}"
+                ><i class="fa fa-play fa-fw"></i> Training Model</a
+              >
+            </li>
+
+            <li>
+              <a href="{{ url_for('peramalan') }}"
+                ><i class="fa fa-area-chart fa-fw"></i> Peramalan</a
+              >
+            </li>
+            <!-- <li>
+              <a href="#" class=""
+                ><i class="fa fa-exclamation-circle fa-fw"></i> About</a
+              >
+            </li> -->
+          </ul>
+        </div>
+      </aside>
+
+      <div id="page-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1 class="page-header">Peramalan</h1>
+            </div>
+            <div class="col-lg-12">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %} {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="alert"
+                  aria-hidden="true"
+                >
+                  &times;
+                </button>
+                {{ message }}
+              </div>
+              {% endfor %} {% endif %} {% endwith %}
+            </div>
+            <!-- /.col-lg-12 -->
+          </div>
+          <!-- /.row -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <i class="fa fa-edit fa-fw"></i> Form Input Hari
+                </div>
+                <div class="panel-body">
+                  <h3>Input Jumlah Hari</h3>
+                  <p>Silahkan masukan jumlah hari yang ingin diprediksi</p>
+                  <form
+                    role="form"
+                    action="{{ url_for('peramalan') }}"
+                    method="POST"
+                  >
+                    <div class="form-group input-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        name="numDays"
+                        min="0"
+                        required
+                      />
+                      <span class="input-group-addon">Hari</span>
+                    </div>
+                    <p class="help-block">
+                      <i>*Prediksi dihitung dari tanggal terakhir pada data.</i>
+                    </p>
+                    <div class="form-group">
+                      <label for="modelType">Select Model Type:</label>
+                      <select
+                        class="form-control"
+                        id="modelType"
+                        name="modelType"
+                      >
+                        <option value="LSTM">LSTM</option>
+                        <option value="LSTM_attention">
+                          LSTM with Attention
+                        </option>
+                        <!-- Add more model types here if needed -->
+                      </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                      Prediksi
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-5">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <i class="fa fa-list-ol fa-fw"></i> Hasil Prediksi Harga Cabai
+                  Rawit (LSTM)
+                  <div class="pull-right">
+                    <div class="btn-group">
+                      <button
+                        type="button"
+                        class="btn btn-default btn-xs dropdown-toggle"
+                        data-toggle="dropdown"
+                      >
+                        Download <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu pull-right" role="menu">
+                        <li>
+                          <a href="{{ url_for('download', file_format='csv') }}"
+                            >CSV</a
+                          >
+                        </li>
+                        <li>
+                          <a href="{{ url_for('download', file_format='excel') }}"
+                            >Excel</a
+                          >
+                        </li>
+                        <li>
+                          <a href="{{ url_for('download', file_format='pdf') }}"
+                            >PDF</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover" id="dataTables-example">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Tanggal</th>
+                          <th>Harga/Kg</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% if predicted_data is not none %} {% for index, row in
+                        predicted_data.iterrows() %}
+                        <tr>
+                          <td>{{ loop.index }}</td>
+                          <td>{{ row['Tanggal'].strftime('%Y-%m-%d') }}</td>
+                          <td>
+                            Rp {{ "%.2f" | format(row['Harga Prediksi']) }}
+                          </td>
+                        </tr>
+                        {% endfor %} {% else %}
+                        <tr>
+                          <td colspan="3">No prediction data available.</td>
+                        </tr>
+                        {% endif %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-7">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <i class="fa fa-bar-chart-o fa-fw"></i> Plot Hasil Prediksi &
+                  Evaluasi Model LSTM
+                </div>
+                <div class="panel-body">
+                  <div class="col-lg-12">
+                    <div class="row">
+                      <img
+                      src="{{ url_for('static', filename='images/plot2.png') }}"
+                      alt="Plot Prediksi Harga Cabai"
+                      class="img-responsive"
+                    />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+      </div>
+      <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{{ url_for('static', filename='js/metisMenu.min.js') }}"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="{{ url_for('static', filename='js/dataTables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dataTables/dataTables.bootstrap.min.js') }}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{ url_for('static', filename='js/startmin.js') }}"></script>
+
+    <script>
+      $(document).ready(function () {
+        $("#dataTables-example").DataTable({
+          responsive: true,
+          pageLength: 10, // Set the maximum number of entries per page
+          lengthMenu: [10, 25, 50, 100], // Optional: Provide a menu for selecting page length
+        });
+      });
+    </script>
+  </body>
+</html>

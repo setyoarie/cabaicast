@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>CabaiCast</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
+
+    <!-- MetisMenu CSS -->
+    <link
+      href="{{ url_for('static', filename='css/metisMenu.min.css') }}"
+      rel="stylesheet"
+    />
+
+    <!-- DataTables CSS -->
+    <link
+      href="{{ url_for('static', filename='css/dataTables.bootstrap.css') }}"
+      rel="stylesheet"
+    />
+
+    <!-- DataTables Responsive CSS -->
+    <link
+      href="{{ url_for('static', filename='css/dataTables.responsive.css') }}"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link
+      href="{{ url_for('static', filename='css/startmin.css') }}"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Fonts -->
+    <link
+      href="{{ url_for('static', filename='css/font-awesome.min.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div id="wrapper">
+      <!-- Top Navigation -->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">CabaiCast</a>
+        </div>
+
+        <button
+          type="button"
+          class="navbar-toggle"
+          data-toggle="collapse"
+          data-target=".navbar-collapse"
+        >
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <!-- Left Menu -->
+        <ul class="nav navbar-nav navbar-left navbar-top-links">
+          <li>
+            <a href="#"><i class="fa fa-home fa-fw"></i> Website</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Sidebar -->
+      <aside class="sidebar navbar-default" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+          <ul class="nav" id="side-menu">
+            <li>
+              <a href="{{ url_for('index') }}"><i class="fa fa-home fa-fw"></i> Dashboard</a>
+            </li>
+            <li>
+              <a href="{{ url_for('lihat_data') }}"
+                ><i class="fa fa-database fa-fw"></i> Management Data</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('train_model') }}"
+                ><i class="fa fa-play fa-fw"></i> Training Model</a
+              >
+            </li>
+
+            <li>
+              <a href="{{ url_for('peramalan') }}"
+                ><i class="fa fa-area-chart fa-fw"></i> Peramalan</a
+              >
+            </li>
+            <!-- <li>
+              <a href="#" class=""
+                ><i class="fa fa-exclamation-circle fa-fw"></i> About</a
+              >
+            </li> -->
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Page Content -->
+      <div id="page-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1 class="page-header"></h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="jumbotron">
+                <h1 class="page-header">Selamat Datang di Website CabaiCast</h1>
+                <p>
+                  Program ini berfungsi sebagai alat bantu dalam meramalkan
+                  harga cabai rawit merah di provinsi Jawa Barat dengan
+                  menggunakan metode Attention Mechanism berbasis Long
+                  Short-Therm Memory (LSTM).
+                </p>
+                <p>
+                  <a
+                    href="{{ url_for('lihat_data') }}"
+                    class="btn btn-primary btn-lg"
+                    role="button"
+                    >Mulai Prediksi</a
+                  >
+                </p>
+              </div>
+            </div>
+            <!-- /.col-lg-12 -->
+          </div>
+          <!-- ... Your content goes here ... -->
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{{ url_for('static', filename='js/metisMenu.min.js') }}"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dataTables.bootstrap.min.js') }}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{ url_for('static', filename='js/startmin.js') }}"></script>
+  </body>
+</html>

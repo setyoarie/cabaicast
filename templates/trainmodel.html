@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>CabaiCast</title>
+    <link
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/metisMenu.min.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/dataTables.bootstrap.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/dataTables.responsive.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/startmin.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/font-awesome.min.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <div id="wrapper">
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">CabaiCast</a>
+        </div>
+        <button
+          type="button"
+          class="navbar-toggle"
+          data-toggle="collapse"
+          data-target=".navbar-collapse"
+        >
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <ul class="nav navbar-nav navbar-left navbar-top-links">
+          <li>
+            <a href="#"><i class="fa fa-home fa-fw"></i> Website</a>
+          </li>
+        </ul>
+      </nav>
+
+      <aside class="sidebar navbar-default" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+          <ul class="nav" id="side-menu">
+            <ul class="nav" id="side-menu">
+              <li>
+                <a href="{{ url_for('index') }}"><i class="fa fa-home fa-fw"></i> Dashboard</a>
+              </li>
+              <li>
+                <a href="{{ url_for('lihat_data') }}"
+                  ><i class="fa fa-database fa-fw"></i> Management Data</a
+                >
+              </li>
+              <li>
+                <a href="{{ url_for('train_model') }}"
+                  ><i class="fa fa-play fa-fw"></i> Training Model</a
+                >
+              </li>
+  
+              <li>
+                <a href="{{ url_for('peramalan') }}"
+                  ><i class="fa fa-area-chart fa-fw"></i> Peramalan</a
+                >
+              </li>
+              <!-- <li>
+                <a href="#" class=""
+                  ><i class="fa fa-exclamation-circle fa-fw"></i> About</a
+                >
+              </li> -->
+            </ul>
+        </div>
+      </aside>
+
+      <div id="page-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1 class="page-header">Training Model</h1>
+            </div>
+            <!-- Flash Messages -->
+            <div class="row">
+              <div class="col-lg-12">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %} {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-hidden="true"
+                  >
+                    &times;
+                  </button>
+                  {{ message }}
+                </div>
+                {% endfor %} {% endif %} {% endwith %}
+              </div>
+            </div>
+            <!-- /.col-lg-12 -->
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <i class="fa fa-edit fa-fw"></i> Form Setting Parameter
+                </div>
+                <div class="panel-body">
+                  <form
+                    role="form"
+                    method="POST"
+                    action="{{ url_for('train_model') }}"
+                  >
+                    <div class="form-group">
+                      <label>Jumlah Neuron</label>
+                      <label class="radio-inline">
+                        <input
+                          type="radio"
+                          name="neuronOptions"
+                          value="50"
+                          checked
+                        />50
+                      </label>
+                      <label class="radio-inline">
+                        <input
+                          type="radio"
+                          name="neuronOptions"
+                          value="100"
+                        />100
+                      </label>
+                    </div>
+                    <fieldset disabled>
+                      <div class="form-group">
+                        <label for="disabledSelect">Jumlah Hidden Layer</label>
+                        <input
+                          class="form-control"
+                          id="disabledInput"
+                          type="text"
+                          placeholder="3"
+                          readonly
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="disabledSelect">Optimizer</label>
+                        <input
+                          class="form-control"
+                          id="disabledInput"
+                          type="text"
+                          placeholder="Adam"
+                          readonly
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="disabledSelect">Learning Rate</label>
+                        <input
+                          class="form-control"
+                          id="disabledInput"
+                          type="text"
+                          placeholder="0,001"
+                          readonly
+                        />
+                      </div>
+                    </fieldset>
+                    <div class="form-group">
+                      <label>Jumlah Batch Size</label>
+                      <label class="radio-inline">
+                        <input
+                          type="radio"
+                          name="batchSizeOptions"
+                          value="32"
+                          checked
+                        />32
+                      </label>
+                      <label class="radio-inline">
+                        <input
+                          type="radio"
+                          name="batchSizeOptions"
+                          value="64"
+                        />64
+                      </label>
+                      <label class="radio-inline">
+                        <input
+                          type="radio"
+                          name="batchSizeOptions"
+                          value="128"
+                        />128
+                      </label>
+                    </div>
+                    <div class="form-group">
+                      <label>Jumlah Epoch</label>
+                      <input
+                        class="form-control"
+                        type="number"
+                        name="epochs"
+                        min="1"
+                        max="1000"
+                      />
+                      <p class="help-block"><i>*Input Epoch 1-1000</i></p>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                      Training Model
+                    </button>
+                    <button type="reset" class="btn btn-default">Reset</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <i class="fa fa-bar-chart-o fa-fw"></i> Evaluasi Model LSTM
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <h3>MAE: {{ session['lstm_mae'] }}</h3>
+                    </div>
+                    <div class="col-xs-4">
+                      <h3>RMSE: {{ session['lstm_rmse'] }}</h3>
+                    </div>
+                    <div class="col-xs-4">
+                      <h3>MAPE: {{ session['lstm_mape'] }}</h3>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <img
+                        src="{{ url_for('static', filename='images/lstm_performance_plot.png') }}"
+                        alt="LSTM Performance"
+                        class="img-responsive"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <i class="fa fa-bar-chart-o fa-fw"></i> Evaluasi Model LSTM
+                  Attention Mechanism
+                </div>
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <h3>MAE: {{ session['lstm_attn_mae'] }}</h3>
+                    </div>
+                    <div class="col-xs-4">
+                      <h3>RMSE: {{ session['lstm_attn_rmse'] }}</h3>
+                    </div>
+                    <div class="col-xs-4">
+                      <h3>MAPE: {{ session['lstm_attn_mape'] }}</h3>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <img
+                        src="{{ url_for('static', filename='images/lstm_attention_performance_plot.png') }}"
+                        alt="LSTM Attention Performance"
+                        class="img-responsive"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/metisMenu.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/startmin.js') }}"></script>
+  </body>
+</html>

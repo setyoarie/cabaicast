@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>CabaiCast</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
+
+    <!-- MetisMenu CSS -->
+    <link
+      href="{{ url_for('static', filename='css/metisMenu.min.css') }}"
+      rel="stylesheet"
+    />
+
+    <!-- DataTables CSS -->
+    <link
+      href="{{ url_for('static', filename='css/dataTables.bootstrap.css') }}"
+      rel="stylesheet"
+    />
+
+    <!-- DataTables Responsive CSS -->
+    <link
+      href="{{ url_for('static', filename='css/dataTables.responsive.css') }}"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link
+      href="{{ url_for('static', filename='css/startmin.css') }}"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Fonts -->
+    <link
+      href="{{ url_for('static', filename='css/font-awesome.min.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div id="wrapper">
+      <!-- Top Navigation -->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">CabaiCast</a>
+        </div>
+
+        <button
+          type="button"
+          class="navbar-toggle"
+          data-toggle="collapse"
+          data-target=".navbar-collapse"
+        >
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <!-- Left Menu -->
+        <ul class="nav navbar-nav navbar-left navbar-top-links">
+          <li>
+            <a href="#"><i class="fa fa-home fa-fw"></i> Website</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Sidebar -->
+      <aside class="sidebar navbar-default" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+          <ul class="nav" id="side-menu">
+            <li>
+              <a href="{{ url_for('index') }}"><i class="fa fa-home fa-fw"></i> Dashboard</a>
+            </li>
+            <li>
+              <a href="{{ url_for('lihat_data') }}"
+                ><i class="fa fa-database fa-fw"></i> Management Data</a
+              >
+            </li>
+            <li>
+              <a href="{{ url_for('train_model') }}">
+                <i class="fa fa-play fa-fw"></i> Training Model</a
+              >
+            </li>
+
+            <li>
+              <a href="{{ url_for('peramalan') }}">
+                <i class="fa fa-area-chart fa-fw"></i> Peramalan</a
+              >
+            </li>
+            <!-- <li>
+              <a href="#" class=""
+                ><i class="fa fa-exclamation-circle fa-fw"></i> About</a>
+            </li> -->
+          </ul>
+        </div>
+      </aside>
+
+      <div id="page-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1 class="page-header">Management Data</h1>
+            </div>
+            <!-- Flash Messages -->
+            <div class="row">
+              <div class="col-lg-12">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %} {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-hidden="true"
+                  >
+                    &times;
+                  </button>
+                  {{ message }}
+                </div>
+                {% endfor %} {% endif %} {% endwith %}
+              </div>
+            </div>
+            <!-- /.col-lg-12 -->
+          </div>
+          <!-- /.row -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <i class="fa fa-upload fa-fw"></i> Upload Data
+                </div>
+                <div class="panel-body">
+                  <h3>Upload Data</h3>
+                  <p>Silahkan upload file dataset anda dalam format excel</p>
+                  <form
+                    action="{{ url_for('upload_file') }}"
+                    method="post"
+                    enctype="multipart/form-data"
+                  >
+                    <div class="form-group input-group">
+                      <input
+                        type="file"
+                        name="file"
+                        class="form-control"
+                        id="fileInput"
+                        required
+                      />
+                      <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">
+                          <i>Upload</i>
+                        </button>
+                      </span>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-5">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <i class="fa fa-list-ol fa-fw"></i> Tabel Harga Cabai Rawit
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover" id="dataTables-example">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Tanggal</th>
+                          <th>Harga/Kg</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% if data %} {% for row in data %}
+                        <tr>
+                          <td>{{ loop.index }}</td>
+                          <td>{{ row.Tanggal }}</td>
+                          <td>{{ row.Harga }}</td>
+                        </tr>
+                        {% endfor %} {% endif %}
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.table-responsive -->
+                </div>
+                <!-- /.panel-body -->
+              </div>
+              <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-6 -->
+            <div class="col-lg-7">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <i class="fa fa-bar-chart-o fa-fw"></i> Plot Harga Cabai Rawit
+                  Merah
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <img
+                        src="{{ url_for('static', filename='images/plot.png') }}"
+                        alt="Plot Harga Cabai Rawit"
+                        class="img-responsive"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{{ url_for('static', filename='js/metisMenu.min.js') }}"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="{{ url_for('static', filename='js/dataTables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dataTables/dataTables.bootstrap.min.js') }}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{{ url_for('static', filename='js/startmin.js') }}"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+      $(document).ready(function () {
+        $("#dataTables-example").DataTable({
+          responsive: true,
+        });
+      });
+    </script>
+  </body>
+</html>
